@@ -1,6 +1,7 @@
 import SelectTheme from "./select-theme";
 import { SaveOutputFolderToggle } from "./save-output-folder-toggle";
 import { InputGpuId } from "./input-gpu-id";
+import { CpuModeToggle } from "./cpu-mode-toggle";
 import { CustomModelsFolderSelect } from "./select-custom-models-folder";
 import { LogArea } from "./log-area";
 import { SelectImageScale } from "./select-image-scale";
@@ -202,6 +203,9 @@ function SettingsTab({
       <TurnOffNotificationsToggle />
       <AutoUpdateToggle />
       <EnableContributionToggle />
+
+      {/* CPU MODE TOGGLE (FOR LAPTOPS WITHOUT GPU) */}
+      <CpuModeToggle />
 
       {/* GPU ID INPUT */}
       <InputGpuId gpuId={gpuId} handleGpuIdChange={handleGpuIdChange} />

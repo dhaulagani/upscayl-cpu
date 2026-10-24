@@ -13,7 +13,9 @@
   },
   "SETTINGS": {
     "TITLE": "Settings",
-    "CHANGE_LANGUAGE": { "TITLE": "Change Language" },
+    "CHANGE_LANGUAGE": {
+      "TITLE": "Change Language"
+    },
     "IMAGE_COMPRESSION": {
       "TITLE": "Image Compression",
       "DESCRIPTION": "PNG compression is lossless, so it might not reduce the file size significantly and higher compression values might affect the performance. JPG and WebP compression is lossy."
@@ -108,6 +110,11 @@
     },
     "SYSTEM_INFO": {
       "TITLE": "System Info"
+    },
+    "CPU_MODE": {
+      "TITLE": "CPU Mode (No GPU)",
+      "DESCRIPTION": "Process images using CPU via SwiftShader software rendering. Recommended for laptops without a dedicated GPU.",
+      "BADGE": "Running on CPU (No GPU required)"
     }
   },
   "APP": {

@@ -42,6 +42,7 @@ const imageUpscayl = async (event, payload: ImageUpscaylPayload) => {
   const gpuId = payload.gpuId as string;
   const saveImageAs = payload.saveImageAs as ImageFormat;
   const overwrite = payload.overwrite as boolean;
+  const cpuMode = payload.cpuMode as boolean;
   const imagePath = decodePath(payload.imagePath);
   let inputDir = getDirectoryFromPath(imagePath);
   let outputDir = decodePath(payload.outputPath);
@@ -98,6 +99,7 @@ const imageUpscayl = async (event, payload: ImageUpscaylPayload) => {
         customWidth,
         useCustomWidth,
         tileSize,
+        cpuMode,
       }),
     );
     const upscayl = spawnUpscayl(
@@ -116,8 +118,10 @@ const imageUpscayl = async (event, payload: ImageUpscaylPayload) => {
         compression,
         tileSize,
         ttaMode,
+        cpuMode,
       }),
       logit,
+      { cpuMode },
     );
 
     setChildProcesses(upscayl);
@@ -133,7 +137,7 @@ const imageUpscayl = async (event, payload: ImageUpscaylPayload) => {
         ELECTRON_COMMANDS.UPSCAYL_PROGRESS,
         data.toString(),
       );
-      if (data.includes("Error") || data.includes("failed")) {
+      if (data.includes("Error") || data.includes("failed") || data.includes("invalid gpu device")) {
         upscayl.kill();
         failed = true;
         onError(data);
@@ -154,7 +158,7 @@ const imageUpscayl = async (event, payload: ImageUpscaylPayload) => {
     };
     const onClose = async () => {
       if (!failed && !stopped) {
-        logit("💯 Done upscaling");
+        logit("🥪 Done upscaling");
         // Free up memory
         upscayl.kill();
         mainWindow.setProgressBar(-1);

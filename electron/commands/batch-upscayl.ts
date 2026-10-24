@@ -30,6 +30,7 @@ const batchUpscayl = async (event, payload: BatchUpscaylPayload) => {
   const model = payload.model;
   const gpuId = payload.gpuId;
   const saveImageAs = payload.saveImageAs;
+  const cpuMode = payload.cpuMode;
   // GET THE IMAGE DIRECTORY
   let inputDir = decodeURIComponent(payload.batchFolderPath);
   // GET THE OUTPUT DIRECTORY
@@ -61,8 +62,10 @@ const batchUpscayl = async (event, payload: BatchUpscaylPayload) => {
       compression,
       tileSize,
       ttaMode,
+      cpuMode,
     }),
     logit,
+    { cpuMode },
   );
 
   childProcesses.push(upscayl);
@@ -80,7 +83,8 @@ const batchUpscayl = async (event, payload: BatchUpscaylPayload) => {
     );
     if (
       (data as string).includes("Error") ||
-      (data as string).includes("failed")
+      (data as string).includes("failed") ||
+      (data as string).includes("invalid gpu device")
     ) {
       logit("❌ ", data);
       encounteredError = true;

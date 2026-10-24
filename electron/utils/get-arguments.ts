@@ -16,6 +16,7 @@ export const getSingleImageArguments = ({
   tileSize,
   compression,
   ttaMode,
+  cpuMode,
 }: {
   inputDir: string;
   fileNameWithExt: string;
@@ -29,9 +30,17 @@ export const getSingleImageArguments = ({
   tileSize: number;
   compression: string;
   ttaMode: boolean;
+  cpuMode?: boolean;
 }) => {
   const modelScale = getModelScale(model);
   let includeScale = modelScale !== scale && !customWidth;
+  const effectiveGpuId = cpuMode ? "0" : (gpuId || "");
+  const effectiveTileSize = tileSize
+    ? tileSize.toString()
+    : cpuMode
+    ? "32"
+    : "";
+
   return [
     // INPUT IMAGE
     "-i",
@@ -49,8 +58,8 @@ export const getSingleImageArguments = ({
     "-n",
     model,
     // GPU ID
-    gpuId ? "-g" : "",
-    gpuId ? gpuId : "",
+    effectiveGpuId ? "-g" : "",
+    effectiveGpuId ? effectiveGpuId : "",
     // FORMAT
     "-f",
     saveImageAs,
@@ -61,8 +70,8 @@ export const getSingleImageArguments = ({
     "-c",
     compression,
     // TILE SIZE
-    tileSize ? `-t` : "",
-    tileSize ? tileSize.toString() : "",
+    effectiveTileSize ? `-t` : "",
+    effectiveTileSize ? effectiveTileSize : "",
     // TTA MODE
     ttaMode ? "-x" : "",
   ];
@@ -79,6 +88,7 @@ export const getDoubleUpscaleArguments = ({
   saveImageAs,
   customWidth,
   tileSize,
+  cpuMode,
 }: {
   inputDir: string;
   fullfileName: string;
@@ -90,9 +100,17 @@ export const getDoubleUpscaleArguments = ({
   saveImageAs: ImageFormat;
   customWidth: string;
   tileSize: number;
+  cpuMode?: boolean;
 }) => {
   const modelScale = getModelScale(model);
   let includeScale = modelScale !== scale && !customWidth;
+  const effectiveGpuId = cpuMode ? "0" : (gpuId || "");
+  const effectiveTileSize = tileSize
+    ? tileSize.toString()
+    : cpuMode
+    ? "32"
+    : "";
+
   return [
     // INPUT IMAGE
     "-i",
@@ -110,14 +128,14 @@ export const getDoubleUpscaleArguments = ({
     "-n",
     model,
     // GPU ID
-    gpuId ? `-g` : "",
-    gpuId ? gpuId : "",
+    effectiveGpuId ? `-g` : "",
+    effectiveGpuId ? effectiveGpuId : "",
     // FORMAT
     "-f",
     saveImageAs,
     // TILE SIZE
-    tileSize ? `-t` : "",
-    tileSize ? tileSize.toString() : "",
+    effectiveTileSize ? `-t` : "",
+    effectiveTileSize ? effectiveTileSize : "",
   ];
 };
 
@@ -132,6 +150,7 @@ export const getDoubleUpscaleSecondPassArguments = ({
   compression,
   tileSize,
   ttaMode,
+  cpuMode,
 }: {
   outFile: string;
   modelsPath: string;
@@ -143,9 +162,17 @@ export const getDoubleUpscaleSecondPassArguments = ({
   compression: string;
   tileSize: number;
   ttaMode: boolean;
+  cpuMode?: boolean;
 }) => {
   const modelScale = getModelScale(model);
   let includeScale = modelScale !== scale && !customWidth;
+  const effectiveGpuId = cpuMode ? "0" : (gpuId || "");
+  const effectiveTileSize = tileSize
+    ? tileSize.toString()
+    : cpuMode
+    ? "32"
+    : "";
+
   return [
     // INPUT IMAGE
     "-i",
@@ -163,8 +190,8 @@ export const getDoubleUpscaleSecondPassArguments = ({
     "-n",
     model,
     // GPU ID
-    gpuId ? `-g` : "",
-    gpuId ? gpuId : "",
+    effectiveGpuId ? `-g` : "",
+    effectiveGpuId ? effectiveGpuId : "",
     // FORMAT
     "-f",
     saveImageAs,
@@ -175,8 +202,8 @@ export const getDoubleUpscaleSecondPassArguments = ({
     "-c",
     compression,
     // TILE SIZE
-    tileSize ? `-t` : "",
-    tileSize ? tileSize.toString() : "",
+    effectiveTileSize ? `-t` : "",
+    effectiveTileSize ? effectiveTileSize : "",
     // TTA MODE
     ttaMode ? "-x" : "",
   ];
@@ -194,6 +221,7 @@ export const getBatchArguments = ({
   compression,
   tileSize,
   ttaMode,
+  cpuMode,
 }: {
   inputDir: string;
   outputDir: string;
@@ -206,9 +234,16 @@ export const getBatchArguments = ({
   compression: string;
   tileSize: number;
   ttaMode: boolean;
+  cpuMode?: boolean;
 }) => {
   const modelScale = getModelScale(model);
   let includeScale = modelScale !== scale && !customWidth;
+  const effectiveGpuId = cpuMode ? "0" : (gpuId || "");
+  const effectiveTileSize = tileSize
+    ? tileSize.toString()
+    : cpuMode
+    ? "32"
+    : "";
 
   return [
     // INPUT IMAGE
@@ -227,8 +262,8 @@ export const getBatchArguments = ({
     "-n",
     model,
     // GPU ID
-    gpuId ? `-g` : "",
-    gpuId ? gpuId : "",
+    effectiveGpuId ? `-g` : "",
+    effectiveGpuId ? effectiveGpuId : "",
     // FORMAT
     "-f",
     saveImageAs,
@@ -239,8 +274,8 @@ export const getBatchArguments = ({
     "-c",
     compression,
     // TILE SIZE
-    tileSize ? `-t` : "",
-    tileSize ? tileSize.toString() : "",
+    effectiveTileSize ? `-t` : "",
+    effectiveTileSize ? effectiveTileSize : "",
     // TTA MODE
     ttaMode ? "-x" : "",
   ];

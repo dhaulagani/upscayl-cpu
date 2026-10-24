@@ -14,6 +14,7 @@ export const selectedModelIdAtom = atomWithStorage<ModelId | string>(
 );
 export const doubleUpscaylAtom = atomWithStorage("doubleUpscayl", false);
 export const gpuIdAtom = atomWithStorage("gpuId", "");
+export const cpuModeAtom = atomWithStorage("cpuMode", false);
 export const saveImageAsAtom = atomWithStorage<ImageFormat>(
   "saveImageAs",
   "png",

@@ -37,6 +37,7 @@ const doubleUpscayl = async (event, payload: DoubleUpscaylPayload) => {
   const model = payload.model;
   const gpuId = payload.gpuId as string;
   const saveImageAs = payload.saveImageAs as ImageFormat;
+  const cpuMode = payload.cpuMode as boolean;
   const imagePath = decodePath(payload.imagePath);
   let inputDir = getDirectoryFromPath(imagePath);
   let outputDir = decodePath(payload.outputPath);
@@ -72,8 +73,10 @@ const doubleUpscayl = async (event, payload: DoubleUpscaylPayload) => {
       gpuId,
       saveImageAs,
       tileSize,
+      cpuMode,
     }),
     logit,
+    { cpuMode },
   );
 
   let upscayl2: ReturnType<typeof spawnUpscayl>;
@@ -88,12 +91,10 @@ const doubleUpscayl = async (event, payload: DoubleUpscaylPayload) => {
   const onError2 = (data) => {
     if (!mainWindow) return;
     data.toString();
-    // SEND UPSCAYL PROGRESS TO RENDERER
     mainWindow.webContents.send(
       ELECTRON_COMMANDS.DOUBLE_UPSCAYL_PROGRESS,
       data,
     );
-    // SET FAILED TO TRUE
     failed2 = true;
     mainWindow &&
       mainWindow.webContents.send(
@@ -107,15 +108,12 @@ const doubleUpscayl = async (event, payload: DoubleUpscaylPayload) => {
 
   const onData2 = (data) => {
     if (!mainWindow) return;
-    // CONVERT DATA TO STRING
     data = data.toString();
-    // SEND UPSCAYL PROGRESS TO RENDERER
     mainWindow.webContents.send(
       ELECTRON_COMMANDS.DOUBLE_UPSCAYL_PROGRESS,
       data,
     );
-    // IF PROGRESS HAS ERROR, UPSCAYL FAILED
-    if (data.includes("Error") || data.includes("failed")) {
+    if (data.includes("Error") || data.includes("failed") || data.includes("invalid gpu device")) {
       upscayl2.kill();
       failed2 = true;
       onError2(data);
@@ -156,12 +154,10 @@ const doubleUpscayl = async (event, payload: DoubleUpscaylPayload) => {
     if (!mainWindow) return;
     mainWindow.setProgressBar(-1);
     data.toString();
-    // SEND UPSCAYL PROGRESS TO RENDERER
     mainWindow.webContents.send(
       ELECTRON_COMMANDS.DOUBLE_UPSCAYL_PROGRESS,
       data,
     );
-    // SET FAILED TO TRUE
     failed = true;
     mainWindow &&
       mainWindow.webContents.send(
@@ -175,15 +171,12 @@ const doubleUpscayl = async (event, payload: DoubleUpscaylPayload) => {
 
   const onData = (data) => {
     if (!mainWindow) return;
-    // CONVERT DATA TO STRING
     data = data.toString();
-    // SEND UPSCAYL PROGRESS TO RENDERER
     mainWindow.webContents.send(
       ELECTRON_COMMANDS.DOUBLE_UPSCAYL_PROGRESS,
       data,
     );
-    // IF PROGRESS HAS ERROR, UPSCAYL FAILED
-    if (data.includes("Error") || data.includes("failed")) {
+    if (data.includes("Error") || data.includes("failed") || data.includes("invalid gpu device")) {
       upscayl.kill();
       failed = true;
       onError(data);
@@ -193,9 +186,7 @@ const doubleUpscayl = async (event, payload: DoubleUpscaylPayload) => {
   };
 
   const onClose = (code) => {
-    // IF NOT FAILED
     if (!failed && !stopped) {
-      // SPAWN A SECOND PASS
       upscayl2 = spawnUpscayl(
         getDoubleUpscaleSecondPassArguments({
           outFile,
@@ -210,8 +201,10 @@ const doubleUpscayl = async (event, payload: DoubleUpscaylPayload) => {
           compression,
           tileSize,
           ttaMode,
+          cpuMode,
         }),
         logit,
+        { cpuMode },
       );
       logit("🚀 Upscaling Second Pass");
       childProcesses.push(upscayl2);

@@ -17,6 +17,7 @@ import {
   selectedModelIdAtom,
   doubleUpscaylAtom,
   gpuIdAtom,
+  cpuModeAtom,
   saveImageAsAtom,
   userStatsAtom,
   ttaModeAtom,
@@ -69,10 +70,10 @@ const Sidebar = ({
   const version = useUpscaylVersion();
 
   // LOCAL STATES
-  // TODO: Add electron handler for os
   const [selectedModelId, setSelectedModelId] = useAtom(selectedModelIdAtom);
   const [doubleUpscayl, setDoubleUpscayl] = useAtom(doubleUpscaylAtom);
   const [gpuId, setGpuId] = useAtom(gpuIdAtom);
+  const [cpuMode] = useAtom(cpuModeAtom);
   const [saveImageAs, setSaveImageAs] = useAtom(saveImageAsAtom);
 
   const [selectedTab, setSelectedTab] = useState(0);
@@ -120,6 +121,7 @@ const Sidebar = ({
             tileSize,
             ttaMode,
             copyMetadata,
+            cpuMode,
           },
         );
         setUserStats((prev) => ({
@@ -149,6 +151,7 @@ const Sidebar = ({
             tileSize,
             ttaMode,
             copyMetadata,
+            cpuMode,
           },
         );
         setUserStats((prev) => ({
@@ -175,6 +178,7 @@ const Sidebar = ({
           tileSize,
           ttaMode,
           copyMetadata,
+          cpuMode,
         });
         setUserStats((prev) => ({
           ...prev,

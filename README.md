@@ -1,3 +1,26 @@
+
+---
+
+## 💻 Upscayl for CPU (Laptops & Desktops Without GPU)
+
+**Upscayl for CPU** enables full AI image upscaling on systems without a dedicated graphics card (NVIDIA / AMD) or with unsupported / legacy integrated GPUs.
+
+### 🌟 How it Works
+Upscayl leverages CPU-based Vulkan software emulation powered by **Google SwiftShader** (Windows / macOS) and **Mesa Lavapipe** (Linux). All NCNN neural network models and Vulkan compute shaders run directly across multi-core CPU threads via SIMD vectorization.
+
+### 🚀 Quick Start on CPU
+1. **Provision CPU Runtime**:
+   ```bash
+   npm run setup:cpu
+   ```
+2. **Enable CPU Mode**:
+   - Open Upscayl -> Go to **Settings** (⚙️).
+   - Toggle **CPU Mode (No GPU)** to **ON**.
+3. **Start Upscaling**:
+   - Select an image and click **Upscayl**!
+   - Optimal tile size (32/64) and memory budget are automatically tuned for CPU cache efficiency.
+
+---
 <div align="center">
 
   # v2.15 is out! 🥳 [Download Now ⬇️](https://github.com/upscayl/upscayl/releases/latest)
