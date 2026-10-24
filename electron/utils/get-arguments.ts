@@ -35,10 +35,11 @@ export const getSingleImageArguments = ({
   const modelScale = getModelScale(model);
   let includeScale = modelScale !== scale && !customWidth;
   const effectiveGpuId = cpuMode ? "0" : (gpuId || "");
+  // Optimal tile size for CPU to minimize prepadding overlap overhead: 256
   const effectiveTileSize = tileSize
     ? tileSize.toString()
     : cpuMode
-    ? "32"
+    ? "256"
     : "";
 
   return [
@@ -108,7 +109,7 @@ export const getDoubleUpscaleArguments = ({
   const effectiveTileSize = tileSize
     ? tileSize.toString()
     : cpuMode
-    ? "32"
+    ? "256"
     : "";
 
   return [
@@ -170,7 +171,7 @@ export const getDoubleUpscaleSecondPassArguments = ({
   const effectiveTileSize = tileSize
     ? tileSize.toString()
     : cpuMode
-    ? "32"
+    ? "256"
     : "";
 
   return [
@@ -242,7 +243,7 @@ export const getBatchArguments = ({
   const effectiveTileSize = tileSize
     ? tileSize.toString()
     : cpuMode
-    ? "32"
+    ? "256"
     : "";
 
   return [

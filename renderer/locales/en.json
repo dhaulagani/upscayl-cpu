@@ -115,6 +115,10 @@
       "TITLE": "CPU Mode (No GPU)",
       "DESCRIPTION": "Process images using CPU via SwiftShader software rendering. Recommended for laptops without a dedicated GPU.",
       "BADGE": "Running on CPU (No GPU required)"
+    },
+    "TURBO_CPU": {
+      "TITLE": "Turbo CPU Acceleration",
+      "DESCRIPTION": "Optimizes CPU tile memory buffers and instruction scheduling for up to 35% faster processing with zero quality degradation."
     }
   },
   "APP": {
